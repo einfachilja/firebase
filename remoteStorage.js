@@ -2,7 +2,8 @@ function onloadFunc() {
     console.log("test");
     // loadData("/name");
     // postData("/name",  {"color": "yellow"}); // pfad für untere struktur und was hinzugefügt werden soll
-    deleteDate("/name/-OPjM7LjplXwGUJVWK_Q"); // pfad für untere struktur und was gelöscht werden soll z.B. ganzer pfad oder nur spezieller eintrag z.B: "/name/-OPjM7LjplXwGUJVWK_Q"
+    // deleteDate("/name/-OPjM7LjplXwGUJVWK_Q"); // pfad für untere struktur und was gelöscht werden soll z.B. ganzer pfad oder nur spezieller eintrag z.B: "/name/-OPjM7LjplXwGUJVWK_Q"
+    updateData("/name/-OPjM7P73KFnMccLSaAH",  {"color": "red"}); // pfad für untere struktur und was hinzugefügt werden soll
 }
 
 const BASE_URL = "https://remotestorage-82664-default-rtdb.europe-west1.firebasedatabase.app/"; // konstant von Anfang an definieren
@@ -29,4 +30,15 @@ async function deleteDate(path = "") {
         method: "DELETE", // methode DELETE "löschen" wird angewandt
     });
     return responseJson = await response.json(); // notwendig, damit die function deleteData() auch etwas zurückmeldet 
+}
+
+async function updateData(path = "", data = {}) { // in den angegebenen Pfad wird die neue data übergeben
+    let response = await fetch(BASE_URL + path + ".json", { // am Ende der url nach .json fragen, sonst gehts nicht!
+        method: "PUT", // methode PUT "updaten" vorhandener Daten wird angewandt
+        header: {   // header muss mitgegeben werden, z.B. dass es sich um json handelt
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)  // im body wird die eigentliche Datei mitgegeben bzw. inhalt
+    });
+    return responseJson = await response.json(); // notwendig, damit die function loadData() auch etwas zurückmeldet
 }
